@@ -1,0 +1,58 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Projectile : MonoBehaviour
+{
+    public float speed;
+    public float lifeTime;
+    public float distance;
+    public LayerMask whatIsSolid;
+    public int damage;
+    public GameObject destroyEffect;
+    public Vector2 forward;
+
+    private void Start()
+    {
+        Invoke("DestroyProjectile", lifeTime);
+    }
+
+    private void Update()
+    {
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, transform.up, distance, whatIsSolid);
+        if (hitInfo.collider != null)
+        {
+            if (hitInfo.collider.CompareTag("Enemy"))
+            {
+              //  Debug.Log("enemy Must Take Damage!");
+                hitInfo.collider.GetComponent<EnemyWalker>().TakeDamage(damage);
+            }
+            DestroyProjectile();
+        }
+
+        transform.Translate(forward * speed * Time.deltaTime);
+        //Debug.LogError(forward);
+    }
+    public void DestroyProjectile()
+    {
+        GameObject deathEffect = Instantiate(destroyEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        Destroy(deathEffect, 1.0f);
+    }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    Physics2D.queriesStartInColliders = false;
+    //    //    Debug.Log(collision.gameObject.name);
+    //    if (collision.gameObject.layer == 9)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+
+    //    if (collision.gameObject.tag == "Enemy")
+    //    {
+    //        collision.gameObject.GetComponent<EnemyWalker>().TakeDamage(damage);
+    //        Destroy(gameObject);
+    //    }
+    //}
+}
