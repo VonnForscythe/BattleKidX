@@ -24,8 +24,8 @@ public class Projectile : MonoBehaviour
         {
             if (hitInfo.collider.CompareTag("Enemy"))
             {
-              //  Debug.Log("enemy Must Take Damage!");
-                hitInfo.collider.GetComponent<EnemyWalker>().TakeDamage(damage);
+                //  Debug.Log("enemy Must Take Damage!");
+                hitInfo.collider.GetComponent<BossEnemy>(); //.TakeDamage(damage);
             }
             DestroyProjectile();
         }

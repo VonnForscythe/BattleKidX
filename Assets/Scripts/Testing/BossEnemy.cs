@@ -12,13 +12,26 @@ public class BossEnemy : MonoBehaviour
     public float startTimeBtwShots;
 
     public GameObject projectile;
-    private Transform player;
+    GameObject player;
+
+    Animator anim;
+    SpriteRenderer sr;
+    public int health;
+
 
     //public float distance;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
+
+
+        if (health <= 0)
+        {
+            health = 3;
+        }
 
         //timeBtwShots = startTimeBtwShots;
 
@@ -32,45 +45,76 @@ public class BossEnemy : MonoBehaviour
 
     void Update()
     {
-
-        float distToPlayer = Vector2.Distance(transform.position, player.position);
-
-        if (Vector2.Distance(transform.position, player.position) > stoppingDistance)
+        if (player)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-        }
-        else if (Vector2.Distance(transform.position, player.position) < stoppingDistance && Vector2.Distance(transform.position, player.position) > retreatDistance)
-        {
-            transform.position = this.transform.position;
-        }
-        else if (Vector2.Distance(transform.position, player.position) < retreatDistance)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, -speed * Time.deltaTime);
-        }
-
-        //if (timeBtwShots <= 0)
-        //{
-        //    Instantiate(projectile, transform.position, Quaternion.identity);
-
-        //    timeBtwShots = startTimeBtwShots;
-        //}
-        //else
-        //{
-        //    timeBtwShots -= Time.deltaTime;
-        //}
-//---------------------------------------------------------------------- Firing DIstance
-        if (distToPlayer < 8)
-        {
-            if (timeBtwShots <= 0)
+            if (player.transform.position.x < transform.position.x)
             {
-                Instantiate(projectile, transform.position, Quaternion.identity);
-
-                timeBtwShots = startTimeBtwShots;
+                sr.flipX = true;
             }
+            else
+            {
+                sr.flipX = false;
+            }
+
+            float distToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+            if (Vector2.Distance(transform.position, player.transform.position) > stoppingDistance)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            }
+            else if (Vector2.Distance(transform.position, player.transform.position) < stoppingDistance && Vector2.Distance(transform.position, player.transform.position) > retreatDistance)
+            {
+                transform.position = this.transform.position;
+            }
+            else if (Vector2.Distance(transform.position, player.transform.position) < retreatDistance)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, -speed * Time.deltaTime);
+            }
+
+            //if (timeBtwShots <= 0)
+            //{
+            //    Instantiate(projectile, transform.position, Quaternion.identity);
+
+            //    timeBtwShots = startTimeBtwShots;
+            //}
+            //else
+            //{
+            //    timeBtwShots -= Time.deltaTime;
+            //}
+
+
+            //---------------------------------------------------------------------- Firing DIstance
+            if (distToPlayer < 8)
+            {
+                if (timeBtwShots <= 0)
+                {
+                    Instantiate(projectile, transform.position, Quaternion.identity);
+
+                    timeBtwShots = startTimeBtwShots;
+                }
+                else
+                {
+                    timeBtwShots -= Time.deltaTime;
+                }
+            }
+        }
         else
         {
-                timeBtwShots -= Time.deltaTime;
-            }
+            if (GameManager.instance.playerInstance)
+                player = GameManager.instance.playerInstance;
+        }
     }
-}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Projectile")
+        {
+            health--;
+            Destroy(collision.gameObject);
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 }

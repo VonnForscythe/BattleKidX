@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Health : MonoBehaviour
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
+
 
     void Update()
     {
@@ -36,6 +38,15 @@ public class Health : MonoBehaviour
             } else
             {
                 hearts[i].enabled = false;
+            }
+
+            if (health <= 0)
+            {
+                if (SceneManager.GetActiveScene().name == "SampleScene")
+                    SceneManager.LoadScene("Endscreen");
+                //else if (SceneManager.GetActiveScene().name == "TitleScreen")
+                //    SceneManager.LoadScene("SampleScene");
+
             }
         }
     }
