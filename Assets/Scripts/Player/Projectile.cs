@@ -19,15 +19,18 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, transform.up, distance, whatIsSolid);
-        if (hitInfo.collider != null)
+        if (Time.timeScale != 0)
         {
-            if (hitInfo.collider.CompareTag("Enemy"))
+            RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, transform.up, distance, whatIsSolid);
+            if (hitInfo.collider != null)
             {
-                //  Debug.Log("enemy Must Take Damage!");
-                hitInfo.collider.GetComponent<BossEnemy>(); //.TakeDamage(damage);
+                if (hitInfo.collider.CompareTag("Enemy"))
+                {
+                    //  Debug.Log("enemy Must Take Damage!");
+                    hitInfo.collider.GetComponent<BossEnemy>(); //.TakeDamage(damage);
+                }
+                DestroyProjectile();
             }
-            DestroyProjectile();
         }
 
         transform.Translate(forward * speed * Time.deltaTime);

@@ -102,24 +102,36 @@ using UnityEngine.SceneManagement;
 #endif
         }
 
-        public void SpawnPlayer(Transform spawnLocation)
+    public void SpawnPlayer(Transform spawnLocation)
+    {
+        CameraFollow mainCamera = FindObjectOfType<CameraFollow>();
+
+        if (mainCamera)
         {
-            CameraFollow mainCamera = FindObjectOfType<CameraFollow>();
-
-            if (mainCamera)
-            {
-                mainCamera.player = Instantiate(playerPrefab, spawnLocation.position, spawnLocation.rotation);
-                playerInstance = mainCamera.player;
-            }
-            else
-            {
-                SpawnPlayer(spawnLocation);
-            }
+            mainCamera.player = Instantiate(playerPrefab, spawnLocation.position, spawnLocation.rotation);
+            playerInstance = mainCamera.player;
         }
+        else
+        {
+            SpawnPlayer(spawnLocation);
+        }
+    }
 
-        public void Respawn()
+    public void Respawn()
         {
             playerInstance.transform.position = currentLevel.spawnLocation.position;
         }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
+        Time.timeScale = 1;
     }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("TitleScreen");
+    }
+}
+
 

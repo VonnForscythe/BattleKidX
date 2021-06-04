@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PickUp : MonoBehaviour
-{ 
+{
+  
     public enum CollectibleType 
     { 
         POWERUP,

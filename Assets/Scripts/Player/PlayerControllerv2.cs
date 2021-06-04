@@ -27,8 +27,14 @@ public class PlayerControllerv2 : MonoBehaviour
 	//-------------------------------------------
 
 	// Use this for initialization
+
+	
+
+
 	void Start()
 	{
+		
+
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 		localScale = transform.localScale;
@@ -42,32 +48,35 @@ public class PlayerControllerv2 : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetButtonDown("Jump") && !isDead && rb.velocity.y == 0)
-			rb.AddForce(Vector2.up * 200f);
-
-		if (Input.GetKey(KeyCode.Space))
-			moveSpeed = 8f;
-		else
-			moveSpeed = 5f;
-
-		SetAnimationState();
-
-		if (!isDead)
-			dirX = Input.GetAxisRaw("Horizontal") * moveSpeed;
-
-		if (isGrounded == true)
+		if (Time.timeScale != 0)
 		{
-			extraJumps = extraJumpsValue;
-		}
+			if (Input.GetButtonDown("Jump") && !isDead && rb.velocity.y == 0)
+				rb.AddForce(Vector2.up * 200f);
 
-		if (Input.GetKeyDown(KeyCode.W) && extraJumps > 0)
-		{
-			rb.AddForce(Vector2.up * 200f);     //rb.velocity = Vector2.up * jumpForce;
-			extraJumps--;
-		}
-		else if (Input.GetKeyDown(KeyCode.W) && extraJumps == 0 && isGrounded == true)
-		{
-			rb.AddForce(Vector2.up * 100f); //rb.velocity = Vector2.up * jumpForce;
+			if (Input.GetKey(KeyCode.Space))
+				moveSpeed = 8f;
+			else
+				moveSpeed = 5f;
+
+			SetAnimationState();
+
+			if (!isDead)
+				dirX = Input.GetAxisRaw("Horizontal") * moveSpeed;
+
+			if (isGrounded == true)
+			{
+				extraJumps = extraJumpsValue;
+			}
+
+			if (Input.GetKeyDown(KeyCode.W) && extraJumps > 0)
+			{
+				rb.AddForce(Vector2.up * 200f);     //rb.velocity = Vector2.up * jumpForce;
+				extraJumps--;
+			}
+			else if (Input.GetKeyDown(KeyCode.W) && extraJumps == 0 && isGrounded == true)
+			{
+				rb.AddForce(Vector2.up * 100f); //rb.velocity = Vector2.up * jumpForce;
+			}
 		}
 	}
 
@@ -85,6 +94,7 @@ public class PlayerControllerv2 : MonoBehaviour
 
 	void SetAnimationState()
 	{
+
 		if (dirX == 0)
 		{
 			anim.SetBool("isWalking", false);
