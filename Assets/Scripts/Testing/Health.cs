@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class Health : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class Health : MonoBehaviour
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
+
+    AudioSource gameOverAudioSource;
+    public AudioClip gameOverSFX;
+    public AudioMixerGroup audioMixer;
+    //public AudioMixer themeMusic;
+
 
 
     void Update()
@@ -42,12 +49,49 @@ public class Health : MonoBehaviour
 
             if (health <= 0)
             {
+                //Invoke("Dying", 3);
+                //if (!gameOverAudioSource)
+                //{
+                //    gameOverAudioSource = gameObject.AddComponent<AudioSource>();
+                //    gameOverAudioSource.clip = gameOverSFX;
+                //    gameOverAudioSource.outputAudioMixerGroup = audioMixer;
+                //    gameOverAudioSource.loop = false;                    
+                //}
+
+                // StartCoroutine(DyingTimer());
+
+                // IEnumerator DyingTimer()
+                // {
+                //     themeMusic.SetFloat("Music", -80);
+                //     gameOverAudioSource.Play();
+
+                //     yield return new WaitForSeconds(3);
+
+                //    // gameOverAudioSource.Play();
+                //     if (SceneManager.GetActiveScene().name == "SampleScene")
+                //         SceneManager.LoadScene("Endscreen");
+                // }
+                //// gameOverAudioSource.Play();
+
+
                 if (SceneManager.GetActiveScene().name == "SampleScene")
                     SceneManager.LoadScene("Endscreen");
-                //else if (SceneManager.GetActiveScene().name == "TitleScreen")
-                //    SceneManager.LoadScene("SampleScene");
+
 
             }
         }
     }
+
+    //void Dying()
+    //{
+    //    gameOverAudioSource = gameObject.AddComponent<AudioSource>();
+    //    gameOverAudioSource.clip = gameOverSFX;
+    //    gameOverAudioSource.outputAudioMixerGroup = audioMixer;
+    //    gameOverAudioSource.loop = false;
+
+    //    gameOverAudioSource.Play();
+    //    //yield return new WaitForSeconds(3);
+    //    if (SceneManager.GetActiveScene().name == "SampleScene")
+    //        SceneManager.LoadScene("Endscreen");
+    //}
 }

@@ -3,7 +3,11 @@ guid: 56145e36479508b4081d869b8ede29f3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - fullHeart: {instanceID: 0}
+  - emptyHeart: {instanceID: 0}
+  - gameOverSFX: {fileID: 8300000, guid: d5558c308c472c749abb5861fab8710c, type: 3}
+  - audioMixer: {fileID: -9067917821362628795, guid: a881deb8ba4a8a84d8fb454208a63594, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

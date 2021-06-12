@@ -231,6 +231,8 @@ MonoBehaviour:
   extraJumpsValue: 0
   isGrounded: 1
   collectible: 0
+  jumpSFX: {fileID: 8300000, guid: 67e7fe7753516ee4895ff7ae1ccc9cbc, type: 3}
+  audioMixer: {fileID: -9067917821362628795, guid: a881deb8ba4a8a84d8fb454208a63594, type: 2}
 --- !u!1 &4448272684024085177
 GameObject:
   m_ObjectHideFlags: 0

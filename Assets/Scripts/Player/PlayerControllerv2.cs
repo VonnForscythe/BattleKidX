@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerControllerv2 : MonoBehaviour
 {
@@ -27,8 +28,19 @@ public class PlayerControllerv2 : MonoBehaviour
 	//-------------------------------------------
 
 	// Use this for initialization
-
+	//[RequireComponent(typeof(AudioSource))]
+	public AudioClip jumpSFX;
+	public AudioMixerGroup audioMixer;
+	AudioSource jumpAudioSource;
+	AudioSource pinkUpAudioSource;
+	AudioSource squishAudioSource;
+	public AudioClip squishSFX;
+	AudioSource pickupAudioSource;
+	public AudioClip pickUpSFX;
 	
+
+
+
 
 
 	void Start()
@@ -39,6 +51,8 @@ public class PlayerControllerv2 : MonoBehaviour
 		anim = GetComponent<Animator>();
 		localScale = transform.localScale;
 		extraJumps = extraJumpsValue;              //v1 Code 
+		//pickupAudioSource = GetComponent<AudioSource>();
+
 
 		if (bounceForce <= 0)
 		{
@@ -51,7 +65,20 @@ public class PlayerControllerv2 : MonoBehaviour
 		if (Time.timeScale != 0)
 		{
 			if (Input.GetButtonDown("Jump") && !isDead && rb.velocity.y == 0)
+			{
 				rb.AddForce(Vector2.up * 200f);
+				if (!jumpAudioSource)
+				{
+					jumpAudioSource = gameObject.AddComponent<AudioSource>();
+					jumpAudioSource.clip = jumpSFX;
+					jumpAudioSource.outputAudioMixerGroup = audioMixer;
+					jumpAudioSource.loop = false;
+				}
+				
+				jumpAudioSource.Play();
+			}
+
+			
 
 			if (Input.GetKey(KeyCode.Space))
 				moveSpeed = 8f;
@@ -60,7 +87,9 @@ public class PlayerControllerv2 : MonoBehaviour
 
 			SetAnimationState();
 
-			if (!isDead)
+			
+
+		if (!isDead)
 				dirX = Input.GetAxisRaw("Horizontal") * moveSpeed;
 
 			if (isGrounded == true)
@@ -79,6 +108,7 @@ public class PlayerControllerv2 : MonoBehaviour
 			}
 		}
 	}
+
 
 	void FixedUpdate()
 	{
@@ -151,26 +181,6 @@ public class PlayerControllerv2 : MonoBehaviour
 		transform.localScale = localScale;
 
 	}
-	//------------------------------------------------------------------ Taking Damage from collectibles = currently broken
-	//void OnTriggerEnter2D(Collider2D col)
-	//{
-	//	if (col.gameObject.name.Equals("Enemy"))
-	//	{
-	//		healthPoints -= 1;
-	//	}
-
-	//	if (col.gameObject.name.Equals("Enemy") && healthPoints > 0)
-	//	{
-	//		anim.SetTrigger("isHurting");
-	//		StartCoroutine("Hurt");
-	//	}
-	//	else
-	//	{
-	//		dirX = 0;
-	//		isDead = true;
-	//		anim.SetTrigger("isDead");
-	//	}
-	//}
 
 	IEnumerator Hurt()
 	{
@@ -193,11 +203,40 @@ public class PlayerControllerv2 : MonoBehaviour
 		{
 			//if (!isGrounded)
 			//{
-				collision.gameObject.GetComponentInParent<EnemyWalker>().IsSquished();
-				rb.velocity = Vector2.zero;
-				rb.AddForce(Vector2.up * bounceForce);
-		//	}
+			collision.gameObject.GetComponentInParent<EnemyWalker>().IsSquished();
+			if (!squishAudioSource)
+			{
+				squishAudioSource = gameObject.AddComponent<AudioSource>();
+				squishAudioSource.clip = squishSFX;
+				squishAudioSource.outputAudioMixerGroup = audioMixer;
+				squishAudioSource.loop = false;
+			}
+
+			squishAudioSource.Play();
+		}
+
+		if (collision.gameObject.tag == "PickUp")
+		{ 
+			if (!pickupAudioSource)
+			{
+				pickupAudioSource = gameObject.AddComponent<AudioSource>();
+				pickupAudioSource.clip = pickUpSFX;
+				pickupAudioSource.outputAudioMixerGroup = audioMixer;
+				pickupAudioSource.loop = false;
+			}
+
+			pickupAudioSource.Play();
+
+			rb.velocity = Vector2.zero;
+			rb.AddForce(Vector2.up * bounceForce);
+			}
 		}
 	}
 
-}
+	//public void CollectibleSound(AudioClip pickupAudio)
+	//{
+	//	pickupAudioSource.clip = pickupAudio;
+	//	pickupAudioSource.Play();
+	//}
+
+//}

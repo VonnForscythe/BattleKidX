@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class Weapon : MonoBehaviour
     public float startTimeBtwShots;
     //private bool facingRight = true;
 
+    public AudioMixerGroup audioMixer;
+    AudioSource playerFireAudioSource;
+    public AudioClip playerFireSFX;
+
     void Update()
     {
         //{
@@ -28,6 +33,15 @@ public class Weapon : MonoBehaviour
                     Projectile temp = Instantiate(projectile, shotPoint.position, transform.rotation);
                     temp.forward = transform.right;
                     timeBtwShots = startTimeBtwShots;
+
+                    if (!playerFireAudioSource)
+                    {
+                        playerFireAudioSource = gameObject.AddComponent<AudioSource>();
+                        playerFireAudioSource.clip = playerFireSFX;
+                        playerFireAudioSource.outputAudioMixerGroup = audioMixer;
+                        playerFireAudioSource.loop = false;
+                    }
+                    playerFireAudioSource.Play();
                 }
             }
             else

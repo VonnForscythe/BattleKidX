@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8970753858411925691}
   m_Layer: 9
   m_Name: DoubleJumpPowerUp
-  m_TagString: Untagged
+  m_TagString: PickUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d946e2003c6cc648a310f923bc08047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCollectible: 0
 --- !u!61 &8970753858411925691
 BoxCollider2D:
   m_ObjectHideFlags: 0

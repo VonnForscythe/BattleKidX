@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Audio;
 public class CanvasManager : MonoBehaviour
 {
     [Header("Buttons")]
@@ -24,6 +24,13 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Slider")]
     public Slider volSlider;
+
+    [Header("Audio")]
+    public AudioClip pauseSound;
+    public AudioMixerGroup soundFXMixer;
+    AudioSource pauseSoundAudio;
+    public AudioMixer themeMusic;
+    float cachedVolume = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -93,7 +100,9 @@ public class CanvasManager : MonoBehaviour
     void ReturnToGame()
     {
         Time.timeScale = 1;
+        themeMusic.SetFloat("Music", cachedVolume);
         pauseMenu.SetActive(false);
+        pauseSoundAudio.Stop();
     }
 
     private void Update()
@@ -105,9 +114,28 @@ public class CanvasManager : MonoBehaviour
             {
                 pauseMenu.SetActive(!pauseMenu.activeSelf);
 
+
+                if (!pauseSoundAudio)
+                {
+                    pauseSoundAudio = gameObject.AddComponent<AudioSource>();
+                    pauseSoundAudio.clip = pauseSound;
+                    pauseSoundAudio.outputAudioMixerGroup = soundFXMixer;
+                    pauseSoundAudio.loop = false;
+                    pauseSoundAudio.volume = 0.2f;
+                }
+
                 if (pauseMenu.activeSelf)
                 {
+                    themeMusic.GetFloat("Music", out cachedVolume);
+                    themeMusic.SetFloat("Music", -80);
+                    pauseSoundAudio.Play();
                     Time.timeScale = 0;
+                }
+                else
+                {
+                    themeMusic.SetFloat("Music", cachedVolume);
+                    Time.timeScale = 1;
+                    pauseSoundAudio.Stop();
                 }
             }
         }
