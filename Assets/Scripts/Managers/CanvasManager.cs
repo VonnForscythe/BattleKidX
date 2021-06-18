@@ -30,7 +30,7 @@ public class CanvasManager : MonoBehaviour
     public AudioMixerGroup soundFXMixer;
     AudioSource pauseSoundAudio;
     public AudioMixer themeMusic;
-    float cachedVolume = 0;
+    public float cachedVolume = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -72,8 +72,7 @@ public class CanvasManager : MonoBehaviour
     }
 
     void ShowMainMenu()
-    {
-       
+    {       
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 
-    public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
     {
         static GameManager _instance = null;
 
@@ -57,11 +58,14 @@ using UnityEngine.SceneManagement;
         public GameObject playerInstance;
         public GameObject playerPrefab;
         public LevelManager currentLevel;
+        CanvasManager curCanvas;
 
         // Start is called before the first frame update
         void Start()
         {
-            if (instance)
+        curCanvas = GetComponent<CanvasManager>();
+
+        if (instance)
             {
                 Destroy(gameObject);
             }
@@ -126,6 +130,7 @@ using UnityEngine.SceneManagement;
     {
         SceneManager.LoadScene("SampleScene");
         Time.timeScale = 1;
+        curCanvas.themeMusic.SetFloat("Music", curCanvas.cachedVolume);
     }
 
     public void ReturnToMenu()
